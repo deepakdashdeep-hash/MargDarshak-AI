@@ -1,4 +1,4 @@
-if st.button("Analyze Mobility"):
+ifst.button("Analyze Mobility"):
 
     st.success("Analysis Running")
 
