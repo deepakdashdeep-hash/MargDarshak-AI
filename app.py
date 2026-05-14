@@ -87,3 +87,20 @@ if weather_data:
 else:
 
     st.error("Weather data unavailable")
+    if st.button("Analyze Mobility"):
+
+    st.success("Analysis Running")
+
+    weather_data = get_weather(start)
+
+    st.write("## 🌦 Weather")
+
+    if weather_data:
+
+        weather, temp, humidity = weather_data
+
+        st.info(f"{weather} | {temp}°C | Humidity: {humidity}%")
+
+    else:
+
+        st.error("Weather data unavailable")
