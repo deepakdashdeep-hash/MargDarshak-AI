@@ -187,3 +187,38 @@ Wind Speed: {wind} m/s
     st.write("- Route optimized using AI logic")
 
     st.write("- ETA dynamically adjusted")
+    def get_weather(city):
+
+    try:
+
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+
+        response = requests.get(url)
+
+        st.write("Status Code:", response.status_code)
+
+        data = response.json()
+
+        st.write(data)
+
+        if response.status_code == 200:
+
+            weather = data["weather"][0]["description"]
+
+            temp = data["main"]["temp"]
+
+            humidity = data["main"]["humidity"]
+
+            wind = data["wind"]["speed"]
+
+            return weather, temp, humidity, wind
+
+        else:
+
+            return None
+
+    except Exception as e:
+
+        st.error(e)
+
+        return None
