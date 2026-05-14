@@ -8,10 +8,10 @@ import requests
 st.set_page_config(page_title="MargDarshak AI")
 
 # ==========================================
-# OPENWEATHER API
+# API KEY
 # ==========================================
 
-API_KEY = "d69be8317bbd8306a07378374a47550d"
+API_KEY = "PASTE_YOUR_OPENWEATHER_API_KEY_HERE"
 
 # ==========================================
 # WEATHER FUNCTION
@@ -19,25 +19,35 @@ API_KEY = "d69be8317bbd8306a07378374a47550d"
 
 def get_weather(city):
 
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    try:
 
-    response = requests.get(url)
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
 
-    data = response.json()
+        response = requests.get(url)
 
-    if data.get("main"):
+        data = response.json()
 
-        weather = data["weather"][0]["description"]
+        if response.status_code == 200:
 
-        temp = data["main"]["temp"]
+            weather = data["weather"][0]["description"]
 
-        humidity = data["main"]["humidity"]
+            temp = data["main"]["temp"]
 
-        wind = data["wind"]["speed"]
+            humidity = data["main"]["humidity"]
 
-        return weather, temp, humidity, wind
+            wind = data["wind"]["speed"]
 
-    return None
+            return weather, temp, humidity, wind
+
+        else:
+
+            return None
+
+    except Exception as e:
+
+        st.error(f"Weather API Error: {e}")
+
+        return None
 
 # ==========================================
 # TITLE
@@ -66,7 +76,7 @@ event = st.selectbox(
 )
 
 # ==========================================
-# ANALYZE BUTTON
+# BUTTON
 # ==========================================
 
 if st.button("Analyze Mobility"):
@@ -74,12 +84,12 @@ if st.button("Analyze Mobility"):
     st.success("Analysis Running")
 
     # ==========================================
-    # WEATHER SECTION
+    # WEATHER ANALYSIS
     # ==========================================
 
-    weather_data = get_weather(start)
-
     st.write("## 🌦 Weather Analysis")
+
+    weather_data = get_weather(start)
 
     if weather_data:
 
@@ -112,7 +122,7 @@ Wind Speed: {wind} m/s
 
     elif traffic == "Medium":
 
-        eta = 42
+        eta = 45
         route = "Eastern Freeway"
 
     else:
@@ -149,7 +159,7 @@ Wind Speed: {wind} m/s
         st.success("Traffic conditions favorable.")
 
     # ==========================================
-    # EVENT ANALYSIS
+    # EVENT IMPACT
     # ==========================================
 
     st.write("## 🎯 Event Impact")
@@ -174,6 +184,6 @@ Wind Speed: {wind} m/s
 
     st.write("- Event probability considered")
 
-    st.write("- Route optimized based on mobility score")
+    st.write("- Route optimized using AI logic")
 
-    st.write("- ETA adjusted dynamically")
+    st.write("- ETA dynamically adjusted")
