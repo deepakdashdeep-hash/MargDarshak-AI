@@ -54,3 +54,36 @@ if st.button("Analyze Mobility"):
     st.write("- Weather stable")
     st.write("- Mobility score optimized")
     st.info("Haze | 31°C")
+    import requests
+    API_KEY = "YOUR_OPENWEATHER_API_KEY"
+
+def get_weather(city):
+
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+
+    response = requests.get(url)
+
+    data = response.json()
+
+    if data.get("main"):
+
+        weather = data["weather"][0]["description"]
+
+        temp = data["main"]["temp"]
+
+        humidity = data["main"]["humidity"]
+
+        return weather, temp, humidity
+
+    return None
+    weather_data = get_weather(start)
+
+if weather_data:
+
+    weather, temp, humidity = weather_data
+
+    st.info(f"{weather} | {temp}°C | Humidity: {humidity}%")
+
+else:
+
+    st.error("Weather data unavailable")
