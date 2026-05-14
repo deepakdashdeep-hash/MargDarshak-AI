@@ -11,7 +11,7 @@ st.set_page_config(page_title="MargDarshak AI")
 # API KEY
 # ==========================================
 
-API_KEY = "05edac055f3389339b3839f967c50ecb"
+API_KEY = "07d3598a007f603f4b6c10c31ee9166e"
 
 # ==========================================
 # WEATHER FUNCTION
