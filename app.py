@@ -187,7 +187,8 @@ Wind Speed: {wind} m/s
     st.write("- Route optimized using AI logic")
 
     st.write("- ETA dynamically adjusted")
-    def get_weather(city):
+
+def get_weather(city):
 
     try:
 
