@@ -53,3 +53,4 @@ if st.button("Analyze Mobility"):
     st.write("- Moderate congestion detected")
     st.write("- Weather stable")
     st.write("- Mobility score optimized")
+    st.info("Haze | 31°C")
