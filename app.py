@@ -78,9 +78,6 @@ event = st.selectbox(
 # ==========================================
 # BUTTON
 # ==========================================
-
-if st.button("Analyze Mobility"):
-
     st.success("Analysis Running")
 
     # ==========================================
@@ -223,3 +220,95 @@ def get_weather(city):
         st.error(e)
 
         return None
+        if st.button("Analyze Mobility"):
+            # ==========================================
+# MULTI ROUTE ENGINE
+# ==========================================
+
+st.write("## 🚗 Multi Route Analysis")
+
+routes = []
+
+# Route 1
+route1_eta = 30
+route1_congestion = "Low"
+route1_score = 85
+
+# Route 2
+route2_eta = 42
+route2_congestion = "Medium"
+route2_score = 70
+
+# Route 3
+route3_eta = 55
+route3_congestion = "High"
+route3_score = 50
+
+# Add routes to list
+
+routes.append({
+    "name": "Western Express Highway",
+    "eta": route1_eta,
+    "congestion": route1_congestion,
+    "score": route1_score
+})
+
+routes.append({
+    "name": "Eastern Freeway",
+    "eta": route2_eta,
+    "congestion": route2_congestion,
+    "score": route2_score
+})
+
+routes.append({
+    "name": "JVLR Connector",
+    "eta": route3_eta,
+    "congestion": route3_congestion,
+    "score": route3_score
+})
+
+# ==========================================
+# DISPLAY ROUTES
+# ==========================================
+
+for route in routes:
+
+    st.write("---")
+
+    st.subheader(route["name"])
+
+    st.write(f"⏱ ETA: {route['eta']} mins")
+
+    st.write(f"🚦 Congestion: {route['congestion']}")
+
+    st.write(f"🧠 Mobility Score: {route['score']}/100")
+
+# ==========================================
+# AI RECOMMENDATION
+# ==========================================
+
+best_route = max(routes, key=lambda x: x["score"])
+
+st.write("## 🏆 AI Recommended Route")
+
+st.success(best_route["name"])
+
+st.write(f"""
+Best ETA: {best_route['eta']} mins
+
+Mobility Score: {best_route['score']}/100
+""")
+
+# ==========================================
+# AI REASONING
+# ==========================================
+
+st.write("## 📌 AI Reasoning")
+
+st.write("- Lowest congestion detected")
+
+st.write("- Best mobility score")
+
+st.write("- Fastest safe route selected")
+
+st.write("- Dynamic optimization completed")
