@@ -1,53 +1,14 @@
 import streamlit as st
-import requests
 
 # ==========================================
 # PAGE CONFIG
 # ==========================================
 
-st.set_page_config(page_title="MargDarshak AI")
-
-# ==========================================
-# API KEY
-# ==========================================
-
-API_KEY = "d69be8317bbd8306a07378374a47550d"
-
-# ==========================================
-# WEATHER FUNCTION
-# ==========================================
-
-def get_weather(city):
-
-    try:
-
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
-
-        response = requests.get(url)
-
-        data = response.json()
-
-        if response.status_code == 200:
-
-            weather = data["weather"][0]["description"]
-
-            temp = data["main"]["temp"]
-
-            humidity = data["main"]["humidity"]
-
-            wind = data["wind"]["speed"]
-
-            return weather, temp, humidity, wind
-
-        else:
-
-            return None
-
-    except Exception as e:
-
-        st.error(f"Weather API Error: {e}")
-
-        return None
+st.set_page_config(
+    page_title="MargDarshak AI",
+    page_icon="🚀",
+    layout="centered"
+)
 
 # ==========================================
 # TITLE
@@ -61,7 +22,7 @@ st.subheader("Hyperlocal Mobility Intelligence")
 # USER INPUTS
 # ==========================================
 
-start = st.text_input("Start Location")
+start_location = st.text_input("Start Location")
 
 destination = st.text_input("Destination")
 
@@ -76,239 +37,190 @@ event = st.selectbox(
 )
 
 # ==========================================
-# BUTTON
+# ANALYZE BUTTON
 # ==========================================
+
+if st.button("Analyze Mobility"):
+
     st.success("Analysis Running")
 
     # ==========================================
-    # WEATHER ANALYSIS
+    # WEATHER SECTION
     # ==========================================
 
-    st.write("## 🌦 Weather Analysis")
+    st.write("## 🌤 Weather Analysis")
 
-    weather_data = get_weather(start)
+    weather_condition = "Haze"
+    temperature = 32
+    humidity = 70
 
-    if weather_data:
+    st.info(f"""
+Weather Condition: {weather_condition}
 
-        weather, temp, humidity, wind = weather_data
-
-        st.info(f"""
-Weather: {weather}
-
-Temperature: {temp}°C
+Temperature: {temperature} °C
 
 Humidity: {humidity}%
-
-Wind Speed: {wind} m/s
 """)
 
-    else:
-
-        st.error("Weather data unavailable")
-
     # ==========================================
-    # ROUTE ANALYSIS
+    # MULTI ROUTE ENGINE
     # ==========================================
 
-    st.write("## 🚗 Route Analysis")
+    st.write("## 🚗 Multi Route Analysis")
 
-    if traffic == "Low":
-
-        eta = 30
-        route = "Western Express Highway"
-
-    elif traffic == "Medium":
-
-        eta = 45
-        route = "Eastern Freeway"
-
-    else:
-
-        eta = 60
-        route = "JVLR Connector"
-
-    st.success(f"Recommended Route: {route}")
+    routes = []
 
     # ==========================================
-    # ETA
+    # ROUTE 1
     # ==========================================
 
-    st.write("## ⏱ Estimated Travel Time")
-
-    st.warning(f"{eta} mins")
-
-    # ==========================================
-    # AI RECOMMENDATION
-    # ==========================================
-
-    st.write("## 🧠 AI Recommendation")
+    route1_eta = 30
+    route1_congestion = "Low"
+    route1_score = 85
 
     if traffic == "High":
-
-        st.error("Heavy congestion detected. Delay travel by 15–20 mins.")
-
-    elif traffic == "Medium":
-
-        st.warning("Moderate congestion. Alternate routes recommended.")
-
-    else:
-
-        st.success("Traffic conditions favorable.")
-
-    # ==========================================
-    # EVENT IMPACT
-    # ==========================================
-
-    st.write("## 🎯 Event Impact")
+        route1_eta += 15
+        route1_score -= 20
 
     if event == "Yes":
-
-        st.error("Major event detected nearby. Congestion probability increased.")
-
-    else:
-
-        st.success("No major mobility disruptions detected.")
+        route1_eta += 10
+        route1_score -= 10
 
     # ==========================================
-    # AI REASONING
+    # ROUTE 2
     # ==========================================
 
-    st.write("## 📌 AI Reasoning")
+    route2_eta = 42
+    route2_congestion = "Medium"
+    route2_score = 70
 
-    st.write("- Real-time weather analyzed")
+    if traffic == "High":
+        route2_eta += 20
+        route2_score -= 15
 
-    st.write("- Traffic congestion considered")
+    if event == "Yes":
+        route2_eta += 8
+        route2_score -= 5
 
-    st.write("- Event probability considered")
+    # ==========================================
+    # ROUTE 3
+    # ==========================================
 
-    st.write("- Route optimized using AI logic")
+    route3_eta = 55
+    route3_congestion = "High"
+    route3_score = 50
 
-    st.write("- ETA dynamically adjusted")
+    if traffic == "High":
+        route3_eta += 25
+        route3_score -= 20
 
-def get_weather(city):
+    if event == "Yes":
+        route3_eta += 12
+        route3_score -= 8
 
-    try:
+    # ==========================================
+    # ADD ROUTES
+    # ==========================================
 
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    routes.append({
+        "name": "Western Express Highway",
+        "eta": route1_eta,
+        "congestion": route1_congestion,
+        "score": route1_score
+    })
 
-        response = requests.get(url)
+    routes.append({
+        "name": "Eastern Freeway",
+        "eta": route2_eta,
+        "congestion": route2_congestion,
+        "score": route2_score
+    })
 
-        st.write("Status Code:", response.status_code)
+    routes.append({
+        "name": "JVLR Connector",
+        "eta": route3_eta,
+        "congestion": route3_congestion,
+        "score": route3_score
+    })
 
-        data = response.json()
+    # ==========================================
+    # DISPLAY ROUTES
+    # ==========================================
 
-        st.write(data)
+    for route in routes:
 
-        if response.status_code == 200:
+        st.write("---")
 
-            weather = data["weather"][0]["description"]
+        st.subheader(route["name"])
 
-            temp = data["main"]["temp"]
+        st.write(f"⏱ ETA: {route['eta']} mins")
 
-            humidity = data["main"]["humidity"]
+        st.write(f"🚦 Congestion: {route['congestion']}")
 
-            wind = data["wind"]["speed"]
+        st.write(f"🧠 Mobility Score: {route['score']}/100")
 
-            return weather, temp, humidity, wind
+    # ==========================================
+    # BEST ROUTE
+    # ==========================================
 
-        else:
-
-            return None
-
-    except Exception as e:
-
-        st.error(e)
-
-        return None
-        if st.button("Analyze Mobility"):
-            # ==========================================
-# MULTI ROUTE ENGINE
-# ==========================================
-
-st.write("## 🚗 Multi Route Analysis")
-
-routes = []
-
-# Route 1
-route1_eta = 30
-route1_congestion = "Low"
-route1_score = 85
-
-# Route 2
-route2_eta = 42
-route2_congestion = "Medium"
-route2_score = 70
-
-# Route 3
-route3_eta = 55
-route3_congestion = "High"
-route3_score = 50
-
-# Add routes to list
-
-routes.append({
-    "name": "Western Express Highway",
-    "eta": route1_eta,
-    "congestion": route1_congestion,
-    "score": route1_score
-})
-
-routes.append({
-    "name": "Eastern Freeway",
-    "eta": route2_eta,
-    "congestion": route2_congestion,
-    "score": route2_score
-})
-
-routes.append({
-    "name": "JVLR Connector",
-    "eta": route3_eta,
-    "congestion": route3_congestion,
-    "score": route3_score
-})
-
-# ==========================================
-# DISPLAY ROUTES
-# ==========================================
-
-for route in routes:
+    best_route = max(routes, key=lambda x: x["score"])
 
     st.write("---")
 
-    st.subheader(route["name"])
+    st.write("## 🏆 AI Recommended Route")
 
-    st.write(f"⏱ ETA: {route['eta']} mins")
+    st.success(best_route["name"])
 
-    st.write(f"🚦 Congestion: {route['congestion']}")
-
-    st.write(f"🧠 Mobility Score: {route['score']}/100")
-
-# ==========================================
-# AI RECOMMENDATION
-# ==========================================
-
-best_route = max(routes, key=lambda x: x["score"])
-
-st.write("## 🏆 AI Recommended Route")
-
-st.success(best_route["name"])
-
-st.write(f"""
+    st.write(f"""
 Best ETA: {best_route['eta']} mins
 
 Mobility Score: {best_route['score']}/100
 """)
 
-# ==========================================
-# AI REASONING
-# ==========================================
+    # ==========================================
+    # AI REASONING
+    # ==========================================
 
-st.write("## 📌 AI Reasoning")
+    st.write("## 🧠 AI Reasoning")
 
-st.write("- Lowest congestion detected")
+    reasoning = []
 
-st.write("- Best mobility score")
+    if best_route["congestion"] == "Low":
+        reasoning.append("Lowest congestion detected")
 
-st.write("- Fastest safe route selected")
+    if best_route["eta"] < 40:
+        reasoning.append("Fastest estimated travel time")
 
-st.write("- Dynamic optimization completed")
+    if best_route["score"] > 80:
+        reasoning.append("Highest mobility optimization score")
+
+    if event == "Yes":
+        reasoning.append("Adjusted for nearby public events")
+
+    reasoning.append("Dynamic mobility optimization completed")
+
+    for reason in reasoning:
+        st.write(f"✅ {reason}")
+
+    # ==========================================
+    # FINAL INSIGHT
+    # ==========================================
+
+    st.write("---")
+
+    st.write("## 📊 Final Mobility Insight")
+
+    if traffic == "High":
+        st.error("Heavy traffic detected across parts of the route network.")
+
+    elif traffic == "Medium":
+        st.warning("Moderate congestion detected.")
+
+    else:
+        st.success("Traffic conditions are favorable.")
+
+    if event == "Yes":
+        st.warning("Large public event may impact travel times.")
+
+    else:
+        st.info("No major mobility disruptions detected.")
